@@ -1,0 +1,165 @@
+    h1 {
+        font-family: Roboto, HelveticaNeue, Arial, sans-serif;
+        color: white;
+        letter-spacing: 2px;
+        font-size: 3rem;
+    }
+    
+    .filetargeted {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        word-wrap: normal;
+        width: 80%;
+        color: rgb(8, 3, 20);
+        text-align: center;
+    }
+    
+    body {
+        height: 100vh;
+        width: 100vw;
+        background-image: linear-gradient(to right, rgba(135, 0, 0, .25), rgba(25, 10, 5, 0.631)), url("./images/unsplash-files.jpg");
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-content: space-between;
+    }
+    
+    .formclass {
+        background-color: rgba(61, 60, 71, 0.5);
+        box-shadow: -5px 2px 42px 10px rgba(0, 0, 0, 0.75);
+        border-radius: 11px 11px 11px 11px;
+        box-shadow: -5px 2px 42px 10px rgba(0, 0, 0, 0.75);
+        height: 80%;
+        width: 50%;
+        position: fixed;
+        top: 10%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .main_form {
+        height: 100%;
+        display: flex;
+        width: 100%;
+        font-family: fantasy;
+        padding: 2rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+    
+    .main_form input[name='filepath'] {
+        position: absolute;
+        z-index: -1;
+        top: 6px;
+        left: 0;
+        font-size: 15px;
+        color: rgb(153, 153, 153);
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+        background-color: white;
+        padding: 1%;
+        word-wrap: normal;
+        max-width: 30%;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    .main_form label {
+        padding: .5rem;
+        padding-left: 1rem;
+        font-size: .5px;
+        border: 1px solid white;
+        background-color: rgb(156, 156, 148);
+        color: rgb(231, 201, 28);
+        font-size: large;
+        font-family: inherit;
+        font-weight: bolder;
+    }
+    
+    .main_form .submitfile {
+        font-size: 1rem;
+        letter-spacing: 3px;
+        position: relative;
+        display: block;
+        color: white;
+        font: outline;
+        padding: 14px 50px;
+        background: none;
+        font-family: "montserrat";
+        border: 2px solid #0b4444;
+        text-transform: uppercase;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+    
+    .main_form .submitfile::before {
+        text-decoration: none;
+        position: absolute;
+        background: #830202;
+        content: "";
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        height: 0%;
+        transform: translate(-50%, -50%) rotate(45deg);
+        z-index: -1;
+        transition: all 0.6s ease;
+    }
+    
+    .main_form .submitfile:hover::before {
+        height: 300px;
+    }
+    
+    .main_form .submitfile:active {
+        transform: scale(1.05, 1.05);
+    }
+    /* Spinner */
+    
+    .lds-ring {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid #fff;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: #fff transparent transparent transparent;
+    }
+    
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+    
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+    
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+    
+    @keyframes lds-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    /*   Spinner */

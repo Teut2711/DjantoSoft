@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'Master/nsdlbenpos.css' %}">
+    <script src="https://kit.fontawesome.com/699d808143.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="formclass">
+
+        <form class="main_form" action="" method="POST" enctype="multipart/form-data">
+            <h1>Upload a text File *.txt</h1>
+            <h2 class="filetargeted"></h2>{% csrf_token %} {{ form }}
+            <input type="hidden" name="hidden" value="">
+
+            <button type="submit" class="submitfile">Submit</button>
+
+        </form>
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <script src="{% static 'Master/nsdlbenpos.js' %} "></script>
+
+</body>
+
+</html>

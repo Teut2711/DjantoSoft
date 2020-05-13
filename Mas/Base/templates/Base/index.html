@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'Base/index.css' %}">
+</head>
+
+<body>
+ 
+
+        <a type="button" class="btn-7" href="{% url 'Master-index' %}"><span>Master</span></a>
+        <a type="button" class="btn-7" href="{% url 'Email-index' %}"><span>Email</span></a>
+        <a type="button" class="btn-7" href=""><span>Query</span></a>
+        <a type="button" class="btn-7" href=""><span>Report</span></a>
+
+</body>
+
+</html>
