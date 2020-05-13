@@ -1,12 +1,14 @@
-document.querySelector(".lds-ring").style.display = "none";
+document.querySelector(".loader").style.display = "none";
+
 
 document.querySelector("label[for='id_filepath']").textContent = "";
 
+
 document.querySelector("label[for='id_filepath']").insertAdjacentHTML('afterbegin',
     '<i class="fas fa-file-upload"></i><span style="color:white;">  Upload *.txt file </span></i>');
-// document.querySelector("label[for='id_filepath']")
 
-document.querySelector("input[id='id_filepath']").addEventListener("click", function(event) {
+
+document.querySelector("input[id='id_filepath']").addEventListener("change", function(event) {
 
     document.querySelector(".filetargeted").textContent = event.target.files[0].name;
 });
@@ -14,7 +16,7 @@ document.querySelector("input[id='id_filepath']").addEventListener("click", func
 
 document.querySelector(".main_form").addEventListener('submit', function(event) {
     //
-    document.querySelector(".lds-ring").style.display = "flex";
+    document.querySelector(".loader").style.display = "flex";
     document.querySelector(".submitfile").remove();
 
     event.preventDefault();
@@ -28,7 +30,7 @@ document.querySelector(".main_form").addEventListener('submit', function(event) 
         body: formData
 
     }).then(function(response) {
-        document.querySelector(".lds-ring").remove();
+        document.querySelector(".loader").remove();
         return response.text()
 
     }).then(function(response) {

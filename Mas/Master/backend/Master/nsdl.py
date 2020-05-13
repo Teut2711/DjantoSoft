@@ -1,15 +1,15 @@
-from functools import wraps
 from Master import models
 
-
 from abc import ABCMeta
-import io
+
+import json
 import pickle
 import pandas as pd
-import sqlite3
 import os
 import pathlib
 from more_itertools.more import split_before
+
+
 PATH = pathlib.Path(__file__).parent
 
 
@@ -17,6 +17,16 @@ def get_cols(cols_file):
     with open(cols_file, "rb") as p:
         cols = pickle.load(p)
     return cols
+
+
+class GetAllInfo:
+    TOTAL_ROWS_INPUT_FILE = 0
+    IN_TABLE_DEMATAD = 0  # models.Dematad.objects.count()
+    IN_TABLE_Demathol = 0  # models.Demathol.objects.count()
+    inserts_DEMATAD = 0  # models.Dematad.objects.count() - IN_TABLE_DEMATAD
+    inserts_Demathol = 0  # models.Demathol.objects.count() - IN_TABLE_Demathol
+    updates_DEMATAD = 0
+    updates_Demathol = 0
 
 
 class GetDataFrame:
@@ -34,6 +44,7 @@ class GetDataFrame:
 
     @staticmethod
     def chunk_to_df(chunk, cols):
+
         isin, date = chunk[0].split("##")[1:3]
         chunk = chunk[1:]
         data = [i.split("##")[2:] for i in chunk]
@@ -52,39 +63,53 @@ class CleanFuncs:
             keep='first')
 
     @staticmethod
-    def demathol_clean(df):
+    def Demathol_clean(df):
         return df.drop_duplicates(
             subset=["DPID", "CLID"],
             keep='first')
 
+
 class ProcessDf:
-        
+
     def processdematad(self, df, cols_dematad, first_time=True):
         if first_time:
-            models.Dematad.bulk_create(df[cols_dematad].to_dict(orient="records"))
+            models.Dematad.bulk_create(df[cols_dematad].to_dict(
+                orient="records"), ignore_conflicts=True)
         else:
-            models.Dematad.bulk_update(df[cols_dematad].to_dict(orient="records"))
+            for i in df[cols_dematad].to_dict(orient="records"):
+                created_or_not = models.Dematad.update_or_create(i)[1]
+                if not(created_or_not):
+                    GetAllInfo.updates_DEMATAD += 1
+                else:
+                    GetAllInfo.inserts_DEMATAD += 1
 
-    def processdemathol(self, df, cols_demathol, first_time=True):
+    def processDemathol(self, df, cols_Demathol, first_time=True):
         if first_time:
-            models.Demathol.bulk_create(df[cols_demathol].to_dict(orient="records"))
-        else:    
-            models.Demathol.bulk_update(df[cols_demathol].to_dict(orient="records"))
+            models.Demathol.bulk_create(df[cols_Demathol].to_dict(
+                orient="records"), ignore_conflicts=True)
+        else:
+            for i in df[cols_Demathol].to_dict(orient="records"):
+                created_or_not = models.Demathol.update_or_create(i)[1]
+                if not(created_or_not):
+                    GetAllInfo.updates_Demathol += 1
+                else:
+                    GetAllInfo.updates_Demathol += 1
 
 
 def main(file_obj):
-    import time;time.sleep(30); return "Done"
+
     cols_df = get_cols(os.path.join(PATH, 'cols', 'cols.pk'))
     cols_dematad = get_cols(os.path.join(PATH, 'cols', 'dematad.pk'))
-    cols_demathol = get_cols(os.path.join(PATH, 'cols', 'demathol.pk'))
-    
-    
-    if models.Dematad.objects.all():
-        for df in GetDataFrame.read_file_obj(file_obj, cols_df):
+    cols_Demathol = get_cols(os.path.join(PATH, 'cols', 'Demathol.pk'))
+
+    if models.Dematad.objects.exists():
+        for df in reversed(GetDataFrame.read_file_obj(file_obj, cols_df)):
             ProcessDf.processdematad(df, cols_dematad, True)
-            ProcessDf.processdemathol(df, cols_demathol, True)
+            ProcessDf.processDemathol(df, cols_Demathol, True)
 
     else:
         for df in GetDataFrame.read_file_obj(file_obj, cols_df):
             ProcessDf.processdematad(df, cols_dematad, False)
-            ProcessDf.processdemathol(df, cols_demathol, False)
+            ProcessDf.processDemathol(df, cols_Demathol, False)
+    return json.dumps({key: value for key, value in vars(GetAllInfo)
+            if not key.startswith('__') and not callable(key)})

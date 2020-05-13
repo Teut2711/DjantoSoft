@@ -14,19 +14,21 @@ def index(request):
 def nsdlbenpos(request):
 
     if request.method == 'POST':
-        
+
         form = forms.NSDLForm(request.POST, request.FILES)
 
         if form.is_valid():
 
-            nsdl.main(form.cleaned_data.get('filepath'))
+            return HttpResponse("<h1>Logs:  Number of rows {}</h1>".format(
+                nsdl.main(form.cleaned_data.get('filepath')
+                          )
+                ))
 
-            return HttpResponse("<h1>Process Completed</h1>")
         else:
             return HttpResponse("<h1>Bad File Input</h1>")
- 
 
-    form = forms.NSDLForm()
+
+    form=forms.NSDLForm()
     return render(request, 'Master/nsdlbenpos.html', context={"form": form})
 
 
