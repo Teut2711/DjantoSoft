@@ -20,8 +20,7 @@ def nsdlbenpos(request):
         form = forms.NSDLForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print("Here")
-            return JsonResponse(
+             return JsonResponse(
                 nsdl.main(form.cleaned_data.get('filepath')
                           )
                 )

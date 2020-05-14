@@ -2,7 +2,7 @@ from django.db import IntegrityError
 
 from Master import models
 
-import logging
+
 from abc import ABCMeta
 import pickle
 import pandas as pd
@@ -10,10 +10,7 @@ import os
 import pathlib
 from more_itertools.more import split_before
 
-logging.basicConfig(filename="Master/backend/Master/Logs/loggs.log", level=logging.INFO)
-
 PATH = pathlib.Path(__file__).parent
-
 
 def get_cols(cols_file):
     with open(cols_file, "rb") as p:
@@ -56,21 +53,6 @@ class GetDataFrame:
         df["DATE"] = date
         return df
 
-
-# class CleanFuncs:
-#     @staticmethod
-#     def Dematad_clean(df):
-#         return df.drop_duplicates(
-#             subset=["DPID", "CLID"],
-#             keep='first')
-
-#     @staticmethod
-#     def Demathol_clean(df):
-#         return df.drop_duplicates(
-#             subset=["DPID", "CLID"],
-#             keep='first')
-
-
 class ProcessDf:
     # ANCHOR The following class takes in a pandas dataframe and creates/updates the tables
 
@@ -92,7 +74,6 @@ class ProcessDf:
                     CLID = i.pop("CLID")
                     created_or_not = models.Dematad.objects.update_or_create(
                         DPID=DPID, CLID=CLID, defaults=i)[1]
-                    print(created_or_not)
                 except IntegrityError:
                     pass
                 else:
@@ -100,7 +81,7 @@ class ProcessDf:
                         GetAllInfo.UPDATES_DEMATAD += 1
                     else:
                         GetAllInfo.UPDATES_DEMATAD += 1
-                    print("Dematad", " :  ", GetAllInfo.UPDATES_DEMATAD)
+
 
     @staticmethod
     def processDemathol( df, cols_Demathol, first_time=True):
@@ -129,7 +110,6 @@ class ProcessDf:
                         GetAllInfo.UPDATES_DEMATHOL += 1
                     else:
                         GetAllInfo.UPDATES_DEMATHOL += 1
-                    print("Demathol", " :  ", GetAllInfo.UPDATES_DEMATHOL)
 
 
 def main(file_obj):
@@ -153,7 +133,6 @@ def main(file_obj):
           
     for df in GetDataFrame.read_file_obj(file_obj, cols_df):
 
-
         if not(dematad):
              ProcessDf.processDematad(df, cols_Dematad, first_time=True)
         else:
@@ -165,6 +144,5 @@ def main(file_obj):
             ProcessDf.processDemathol(df, cols_Demathol, first_time = False)
 
         GetAllInfo.TOTAL_ROWS_INPUT_FILE += df.shape[0]
-    print("Returning")
     return {key: value for key, value in vars(GetAllInfo)
             if not key.startswith('__') and not callable(key)}

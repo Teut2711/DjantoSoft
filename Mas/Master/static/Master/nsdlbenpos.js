@@ -31,13 +31,26 @@ document.querySelector(".main_form").addEventListener('submit', function(event) 
 
     }).then(function(response) {
         document.querySelector(".loader").remove();
-        return response.text()
+        return response.json()
 
     }).then(function(response) {
+
+        var li = [];
+        Object.keys(response).forEach(function(value) {
+            li.push(`<li>${value} :  ${response[value]}</li>`)
+        })
+
+        response = `<div class="main_form">
+        <h3><span style="color:rgb(0, 159, 183)"> Attributes </span> </h3>
+        <ul>
+        ${li.join()}
+        </ul>
+        </div>`
+
         document.querySelector(".formclass").insertAdjacentHTML('beforeend', response);
 
     }).catch(function(response) {
-        console.log("Error");
+        alert("Some Error");
     })
 
     document.querySelector(".main_form").remove()
