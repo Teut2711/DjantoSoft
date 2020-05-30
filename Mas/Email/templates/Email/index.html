@@ -1,0 +1,12 @@
+{% extends 'Base/index.html' %}
+{% block main %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'Email/index.css' %}">
+{% load crispy_forms_tags %} 
+{% load bootstrap4 %}
+{% bootstrap_css %}
+
+{% crispy form %}
+{% bootstrap_messages %}
+
+{% endblock main %}

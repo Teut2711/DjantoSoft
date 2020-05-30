@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 
-    def index(response):
-        render(response, "Report\index.html")
-    
+    
+def index(response):
+    
+    render(response, "Report/index.html")
+    

@@ -51,8 +51,13 @@ document.querySelector(".main_form").addEventListener('submit', function(event) 
 
     }).catch(function(response) {
         alert("Some Error");
+        return response.text()
+    }).then(function(response) {
+        console.log(response)
     })
 
     document.querySelector(".main_form").remove()
 
 })
+
+//0124-4444121

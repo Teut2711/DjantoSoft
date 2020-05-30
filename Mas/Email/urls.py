@@ -4,5 +4,5 @@ from django.urls import path
 from . import views
 urlpatterns = [
     
-    path('email/', views.index, name="Email-index"),
+    path('email/', views.EmailView.as_view(), name="Email-index"),
 ]

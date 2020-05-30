@@ -9,6 +9,7 @@ import pandas as pd
 import os
 import pathlib
 from more_itertools.more import split_before
+from time import time
 
 PATH = pathlib.Path(__file__).parent
 
@@ -66,6 +67,7 @@ class ProcessDf:
                     pass
                 else:
                     GetAllInfo.INSERTS_DEMATAD += 1
+                    
         else:
             for i in df[cols_Dematad].to_dict(orient="records"):
 
@@ -130,19 +132,28 @@ def main(file_obj):
         demathol = True
     else:      
         demathol = False
-          
+    t1 = time()      
     for df in GetDataFrame.read_file_obj(file_obj, cols_df):
-
+        
         if not(dematad):
+             
              ProcessDf.processDematad(df, cols_Dematad, first_time=True)
+             print(time() - t1)
         else:
             ProcessDf.processDematad(df, cols_Dematad, first_time =False)
-            
+            print(time() - t1)
+
         if not(demathol):
              ProcessDf.processDemathol(df, cols_Demathol, first_time = True)
+             print(time() - t1)
+
         else:
             ProcessDf.processDemathol(df, cols_Demathol, first_time = False)
+            print(time() - t1)
 
         GetAllInfo.TOTAL_ROWS_INPUT_FILE += df.shape[0]
+        print(GetAllInfo.TOTAL_ROWS_INPUT_FILE)
+
+    print(time() - t1)
     return {key: value for key, value in vars(GetAllInfo)
             if not key.startswith('__') and not callable(key)}
